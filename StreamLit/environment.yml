@@ -1,0 +1,10 @@
+# Snowflake Streamlit App Dependencies
+name: wellnest_env
+channels:
+  - snowflake
+dependencies:
+  - python
+  - streamlit
+  - snowflake-snowpark-python
+  - pandas
+  - bcrypt
