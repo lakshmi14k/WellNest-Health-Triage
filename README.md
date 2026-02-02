@@ -117,82 +117,56 @@ This was a collaborative academic project where responsibilities were divided by
 | **Authentication** | Snowflake user management, session state |
 
 **Project Structure**
-
+```
 WellNest-Health-Triage/
-
-├── models/                         dbt transformation models
-
-│   ├── staging/                    Silver layer: Data cleaning
-
+├── models/                            # dbt transformation models
+│   ├── staging/                       # Silver layer: Data cleaning
 │   │   ├── stg_bloodpressure_cleaned.sql
-
 │   │   ├── stg_diabetes_cleaned.sql
-
 │   │   ├── stg_mentalhealth_cleaned.sql
-
 │   │   ├── stg_pcos_cleaned.sql
-
 │   │   ├── stg_pcos_infertility_cleaned.sql
-
 │   │   ├── stg_maternalhealth_cleaned.sql
-
 │   │   └── stg_menstrual_cleaned.sql
-
-│   ├── intermediate/               Business logic transformations
-
+│   ├── intermediate/                  # Business logic transformations
 │   │   ├── int_diabetes_risk_urgency.sql
-
 │   │   ├── int_hypertension_risk_urgency.sql
-
 │   │   └── int_mental_health_risk_urgency.sql
-
-│   └── marts/                      Gold layer: Feature engineering
-
+│   └── marts/                         # Gold layer: Feature engineering
 │       ├── ftr_diabetes_core_clinical.sql
-
 │       ├── ftr_diabetes_risk_urgency.sql
-
 │       ├── ftr_diabetes_conversation_prompts.sql
-
 │       ├── ftr_hypertension_core_clinical.sql
-
 │       ├── ftr_hypertension_risk_urgency.sql
-
 │       ├── ftr_hypertension_conversation_prompts.sql
-
 │       ├── ftr_mental_health_core_clinical.sql
-
 │       ├── ftr_mental_health_risk_urgency.sql
-
 │       └── ftr_pcos_core_clinical.sql
-
-├── seeds/                          Reference data
-
-├── macros/                         Reusable dbt macros
-
-├── analyses/                       Ad-hoc analytical queries
-
-├── snapshots/                      Historical data snapshots
-
-├── EDA/                            Exploratory data analysis notebooks
-
-├── ML_Models/                      Baseline ML experiments
-
-├── agents/                         LLM routing logic
-
-├── StreamLit/                      Frontend application
-
-├── Demo_App/                       Demo interface
-
-├── eval/                           Model evaluation scripts
-
-├── tests/                          Data validation tests
-
-├── dbt_project.yml                 dbt configuration
-
+│
+├── seeds/                             # Reference data
+├── macros/                            # Reusable dbt macros
+├── analyses/                          # Ad-hoc analytical queries
+├── snapshots/                         # Historical data snapshots
+│
+├── EDA/                               # Exploratory data analysis notebooks
+│
+├── ML_Models/                         # Baseline ML experiments
+├── agents/                            # LLM routing logic
+├── StreamLit/                         # Frontend application
+├── Demo_App/                          # Demo interface
+├── eval/                              # Model evaluation scripts
+├── tests/                             # Data validation tests
+├── misc/                              # Miscellaneous utilities
+│
+├── docs/
+│   ├── COLLABORATION_CONTEXT.md       # Team roles and attribution
+│   ├── DBT_PIPELINE.md                # Technical deep-dive on transformations
+│   └── WellNest Final Presentation.pptx # Project presentation
+│
+├── dbt_project.yml                    # dbt configuration
 ├── .gitignore
-
 └── README.md
+```
 
 **System Architecture:**
 
