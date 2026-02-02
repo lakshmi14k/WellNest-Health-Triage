@@ -1,0 +1,563 @@
+# models/gold/features/mental_health_llm/schema.yml
+
+version: 2
+
+models:
+  - name: ftr_mental_health_core_clinical
+    description: "Core clinical features for mental health symptom pattern recognition"
+    columns:
+      - name: age_category
+        description: "Age category for mental health risk stratification"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['adolescent', 'young_adult', 'adult', 'middle_age', 'senior', 'unknown']
+      
+      - name: mental_health_history_clean
+        description: "Standardized mental health history status"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['documented_history', 'no_history', 'possible_history', 'unknown']
+      
+      - name: has_mental_health_history
+        description: "Flag indicating documented mental health history"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: has_family_mental_health_history
+        description: "Flag indicating family history of mental health conditions"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: genetic_history_risk
+        description: "Combined personal and family history risk category"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['high_genetic_risk', 'moderate_risk', 'possible_risk', 'low_risk']
+      
+      - name: mood_swing_severity
+        description: "Severity classification of mood swings"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['severe', 'moderate', 'mild', 'none_reported']
+      
+      - name: stress_level
+        description: "Current stress level classification"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['significant_stress', 'possible_stress', 'no_stress', 'unknown']
+      
+      - name: has_coping_difficulties
+        description: "Flag indicating difficulty with coping mechanisms"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: social_functioning_status
+        description: "Social functioning and relationships status"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['social_impairment', 'social_difficulty', 'intact_social_function', 'unknown']
+      
+      - name: work_motivation_status
+        description: "Work interest and motivation status"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['anhedonia_work', 'reduced_motivation', 'maintained_interest', 'unknown']
+      
+      - name: behavioral_change_status
+        description: "Status of behavioral and habit changes"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['significant_changes', 'some_changes', 'stable_habits', 'unknown']
+      
+      - name: social_isolation_level
+        description: "Level of social isolation based on days indoors"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['no_isolation', 'mild_isolation', 'moderate_isolation', 'severe_isolation', 'unknown']
+      
+      - name: isolation_severity_score
+        description: "Numeric severity score for social isolation (0-4)"
+        tests:
+          - accepted_values:
+              values: [0, 1, 2, 3, 4]
+      
+      - name: in_active_treatment
+        description: "Flag indicating currently receiving mental health treatment"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: care_awareness_status
+        description: "Awareness of mental health care options"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['aware_of_options', 'uncertain_about_care', 'unaware_of_options', 'unknown']
+      
+      - name: has_treatment_gap
+        description: "Flag indicating history of mental health condition but not in treatment"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: occupation_category
+        description: "Occupation category classification"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['student', 'professional', 'homemaker', 'other', 'unknown']
+      
+      - name: employment_status
+        description: "Employment status classification"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['self_employed', 'student', 'homemaker', 'employed']
+      
+      - name: mental_health_disclosure_comfort
+        description: "Comfort level discussing mental health in professional settings"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['comfortable_discussing', 'somewhat_comfortable', 'uncomfortable_discussing', 'unknown']
+      
+      - name: perceived_workplace_stigma
+        description: "Flag indicating perception of mental health stigma in workplace"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: symptom_count
+        description: "Count of positive mental health symptom indicators"
+        tests:
+          - not_null
+      
+      - name: severe_symptom_count
+        description: "Count of severe mental health symptoms"
+        tests:
+          - not_null
+      
+      - name: gender_clean
+        description: "Standardized gender classification"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['male', 'female', 'other']
+
+  - name: ftr_mental_health_risk_urgency
+    description: "Risk scoring and urgency classification for mental health conditions"
+    columns:
+      - name: depression_risk_score
+        description: "PHQ-9 style depression symptom cluster score (0-18 scale)"
+        tests:
+          - not_null
+      
+      - name: depression_severity
+        description: "Depression severity category based on symptom score"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['minimal_depression', 'mild_depression', 'moderate_depression', 'moderately_severe_depression', 'severe_depression']
+      
+      - name: anxiety_risk_score
+        description: "GAD-7 style anxiety symptom cluster score (0-14 scale)"
+        tests:
+          - not_null
+      
+      - name: anxiety_severity
+        description: "Anxiety severity category based on symptom score"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['minimal_anxiety', 'mild_anxiety', 'moderate_anxiety', 'severe_anxiety']
+      
+      - name: mental_health_urgency_level
+        description: "Overall mental health urgency classification for triage"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['emergency', 'urgent', 'needs_attention', 'routine', 'monitoring']
+      
+      - name: functional_impairment_score
+        description: "Overall functional impairment score (0-10 scale)"
+        tests:
+          - not_null
+      
+      - name: functional_impairment_category
+        description: "Functional impairment severity category"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['no_impairment', 'mild_impairment', 'moderate_impairment', 'severe_impairment']
+      
+      - name: therapy_priority
+        description: "Priority level for therapy/counseling intervention"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['high_priority', 'moderate_priority', 'low_priority', 'preventive']
+      
+      - name: medication_evaluation_priority
+        description: "Priority level for psychiatric medication evaluation"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['psychiatric_evaluation_urgent', 'psychiatric_evaluation_needed', 'consider_evaluation', 'not_indicated']
+      
+      - name: needs_suicide_risk_screening
+        description: "Flag indicating need for suicide risk screening"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: has_comorbid_depression_anxiety
+        description: "Flag indicating presence of both depression and anxiety"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: case_complexity_score
+        description: "Case complexity score considering multiple factors (0-5 scale)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [0, 1, 2, 3, 4, 5]
+
+  - name: ftr_mental_health_conversation_prompts
+    description: "Features to guide conversational flow for mental health interviews"
+    columns:
+      - name: should_ask_depressive_symptoms
+        description: "Flag to ask about depressive symptoms"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_anxiety_symptoms
+        description: "Flag to ask about anxiety symptoms"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_sleep_patterns
+        description: "Flag to ask about sleep patterns and disturbances"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_appetite_changes
+        description: "Flag to ask about appetite and eating changes"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_concentration
+        description: "Flag to ask about concentration and memory"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_energy_levels
+        description: "Flag to ask about energy and fatigue levels"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_screen_suicidal_ideation
+        description: "Flag to screen for suicidal thoughts (safety assessment)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_assess_selfharm_history
+        description: "Flag to assess history of self-harm behaviors"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_evaluate_safety_plan
+        description: "Flag to evaluate need for safety planning"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_social_support
+        description: "Flag to ask about social support systems"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_relationships
+        description: "Flag to ask about interpersonal relationships"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_family_dynamics
+        description: "Flag to ask about family relationships and dynamics"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_work_functioning
+        description: "Flag to ask about work or school functioning"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_daily_activities
+        description: "Flag to ask about daily activities and self-care"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_motivation
+        description: "Flag to ask about motivation and goal-setting"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_physical_activity
+        description: "Flag to ask about exercise and physical activity"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_substance_use
+        description: "Flag to ask about alcohol and substance use"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_coping_strategies
+        description: "Flag to ask about current coping strategies"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_hobbies_interests
+        description: "Flag to ask about hobbies and leisure interests"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_past_treatment
+        description: "Flag to ask about past mental health treatment"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_current_medications
+        description: "Flag to ask about current psychiatric medications"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_therapy_experience
+        description: "Flag to ask about therapy or counseling experience"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_medication_sideeffects
+        description: "Flag to ask about medication side effects"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_treatment_satisfaction
+        description: "Flag to ask about satisfaction with current treatment"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_care_access
+        description: "Flag to ask about access to mental health care"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_financial_barriers
+        description: "Flag to ask about financial barriers to care"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_stigma_concerns
+        description: "Flag to ask about mental health stigma concerns"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_scheduling_barriers
+        description: "Flag to ask about time and scheduling barriers"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_explore_panic_symptoms
+        description: "Flag to explore panic attack symptoms"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_explore_social_anxiety
+        description: "Flag to explore social anxiety symptoms"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_explore_trauma_history
+        description: "Flag to explore trauma and PTSD history"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_explore_mood_episodes
+        description: "Flag to explore manic or hypomanic episodes"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: needs_crisis_referral
+        description: "Flag indicating need for immediate crisis intervention"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: needs_psychiatrist_referral
+        description: "Flag indicating need for psychiatrist referral"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: needs_therapist_referral
+        description: "Flag indicating need for therapist/counselor referral"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: needs_support_group_referral
+        description: "Flag indicating need for support group referral"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: needs_workplace_accommodation
+        description: "Flag indicating need for workplace accommodation discussion"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: priority_education_topics
+        description: "Comma-separated list of priority psychoeducation topics"
+        tests:
+          - not_null
+      
+      - name: selfcare_focus_areas
+        description: "Comma-separated list of self-care focus areas"
+        tests:
+          - not_null
+      
+      - name: recommended_therapy_modalities
+        description: "Comma-separated list of recommended therapy approaches"
+        tests:
+          - not_null
+      
+      - name: communication_tone
+        description: "Recommended communication tone based on urgency and severity"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['urgent_compassionate_immediate', 'serious_supportive_prompt', 'concerned_encouraging', 'supportive_informative', 'positive_preventive']
+      
+      - name: recommended_followup_timeframe
+        description: "Recommended follow-up timeframe based on urgency"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['immediate_within_24hrs', 'within_1_week', 'within_2_weeks', 'within_1_month', 'as_needed']
+      
+      - name: treatment_plan_complexity
+        description: "Treatment plan complexity category"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['complex_multidisciplinary', 'moderate_coordinated_care', 'standard_single_provider', 'basic_self_help']
+      
+      - name: monitoring_intensity_needed
+        description: "Recommended monitoring intensity level"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['intensive_monitoring', 'frequent_monitoring', 'regular_monitoring', 'periodic_monitoring', 'self_monitoring']
+      
+      - name: conversation_starting_point
+        description: "Recommended conversation starting point"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['safety_assessment', 'crisis_intervention', 'treatment_review', 'history_exploration', 'symptom_screening']
+      
+      - name: primary_clinical_concern
+        description: "Primary clinical concern to address first"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['immediate_safety', 'severe_depression', 'severe_anxiety', 'comorbid_conditions', 'functional_decline', 'treatment_discontinuation', 'social_withdrawal', 'symptom_management']

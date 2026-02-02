@@ -1,0 +1,539 @@
+# models/gold/features/womens_wellness_llm/schema.yml
+
+version: 2
+
+models:
+  - name: ftr_maternal_health_core_clinical
+    description: "Core clinical features for maternal health and pregnancy complication risk assessment"
+    columns:
+      - name: maternal_age_category
+        description: "Maternal age category for pregnancy risk stratification"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['adolescent_high_risk', 'teenage_pregnancy', 'optimal_reproductive_age', 'advanced_maternal_age', 'very_advanced_maternal_age', 'unknown']
+      
+      - name: has_age_related_risk
+        description: "Flag indicating age-related pregnancy risk (<18 or >=35)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: pregnancy_bp_stage
+        description: "Blood pressure stage classification for pregnancy (ACOG guidelines)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['normal', 'elevated_monitor', 'gestational_htn_stage1', 'severe_htn_preeclampsia_risk', 'unknown']
+      
+      - name: systolic_category_pregnancy
+        description: "Systolic blood pressure category for pregnancy"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['hypotension', 'normal', 'elevated', 'stage1_htn', 'severe_htn', 'unknown']
+      
+      - name: diastolic_category_pregnancy
+        description: "Diastolic blood pressure category for pregnancy"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['hypotension', 'normal', 'elevated', 'stage1_htn', 'severe_htn', 'unknown']
+      
+      - name: preeclampsia_bp_warning
+        description: "Flag indicating blood pressure meeting preeclampsia criteria (>=140/90)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: severe_preeclampsia_bp_warning
+        description: "Flag indicating severe preeclampsia blood pressure criteria (>=160/110)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: pulse_pressure
+        description: "Pulse pressure (systolic - diastolic)"
+        tests:
+          - not_null
+      
+      - name: mean_arterial_pressure
+        description: "Calculated mean arterial pressure (MAP)"
+        tests:
+          - not_null
+      
+      - name: map_risk_category
+        description: "MAP risk category for preeclampsia assessment"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['low', 'normal', 'elevated_preeclampsia_risk', 'unknown']
+      
+      - name: heart_rate_category_pregnancy
+        description: "Heart rate category adjusted for pregnancy physiology"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['bradycardia', 'normal_pregnancy', 'mildly_elevated', 'tachycardia_concerning', 'severe_tachycardia', 'unknown']
+      
+      - name: has_tachycardia
+        description: "Flag indicating tachycardia (heart rate >100 bpm)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: blood_sugar_category
+        description: "Blood sugar category for gestational diabetes screening"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['normal', 'impaired_glucose_tolerance', 'gestational_diabetes_suspected', 'unknown']
+      
+      - name: gestational_diabetes_risk
+        description: "Flag indicating blood sugar >=140 (gestational diabetes risk)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: hyperglycemia_severity
+        description: "Hyperglycemia severity classification"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['normal', 'mild_hyperglycemia', 'moderate_hyperglycemia', 'severe_hyperglycemia', 'unknown']
+      
+      - name: temperature_category
+        description: "Body temperature category"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['hypothermia', 'normal', 'low_grade_fever', 'fever', 'high_fever', 'unknown']
+      
+      - name: has_fever
+        description: "Flag indicating fever (temperature >=100.4°F)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: risk_level_clean
+        description: "Standardized risk level from source data"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['low_risk', 'moderate_risk', 'high_risk', 'unknown']
+      
+      - name: has_critical_vitals
+        description: "Flag indicating any vital sign in critical danger zone"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: abnormal_vitals_count
+        description: "Count of abnormal vital signs (0-5)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [0, 1, 2, 3, 4, 5]
+      
+      - name: preeclampsia_indicator_count
+        description: "Count of preeclampsia risk indicators present"
+        tests:
+          - not_null
+      
+      - name: has_severe_preeclampsia_features
+        description: "Flag indicating presence of severe preeclampsia features"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+
+  - name: ftr_maternal_health_risk_urgency
+    description: "Risk scoring and urgency classification for maternal health complications"
+    columns:
+      - name: preeclampsia_risk_score
+        description: "Preeclampsia risk score (0-10 scale)"
+        tests:
+          - not_null
+      
+      - name: preeclampsia_risk_category
+        description: "Preeclampsia risk category based on composite score"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['low_risk', 'moderate_risk', 'high_risk', 'severe_risk']
+      
+      - name: gestational_diabetes_risk_score
+        description: "Gestational diabetes risk score (0-8 scale)"
+        tests:
+          - not_null
+      
+      - name: gestational_diabetes_risk_category
+        description: "Gestational diabetes risk category"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['low_risk', 'moderate_risk', 'high_risk']
+      
+      - name: maternal_emergency_type
+        description: "Type of maternal emergency if present"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['hypertensive_emergency', 'high_fever_emergency', 'hyperglycemic_emergency', 'severe_tachycardia_emergency', 'no_emergency']
+      
+      - name: maternal_urgency_level
+        description: "Overall maternal health urgency classification for triage"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['emergency', 'urgent', 'needs_attention', 'routine']
+      
+      - name: maternal_complication_risk_score
+        description: "Maternal complication composite risk score (0-15 scale)"
+        tests:
+          - not_null
+      
+      - name: fetal_risk_category
+        description: "Fetal risk category based on maternal status"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['high_fetal_risk', 'moderate_fetal_risk', 'standard_monitoring']
+      
+      - name: bp_monitoring_frequency
+        description: "Recommended blood pressure monitoring frequency"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['continuous_hospital', 'twice_daily_home', 'daily_home', 'routine_prenatal']
+      
+      - name: glucose_monitoring_frequency
+        description: "Recommended glucose monitoring frequency"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['multiple_daily_monitoring', 'fasting_postprandial_monitoring', 'routine_screening']
+      
+      - name: likely_needs_medication
+        description: "Flag indicating likely need for pharmacotherapy"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: hospitalization_recommendation
+        description: "Hospitalization recommendation category"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['immediate_hospitalization', 'consider_admission', 'observation_needed', 'outpatient_management']
+      
+      - name: delivery_timing_consideration
+        description: "Delivery timing consideration based on maternal/fetal risk"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['expedited_delivery_consideration', 'early_delivery_planning', 'routine_delivery_planning']
+
+  - name: ftr_maternal_health_conversation_prompts
+    description: "Features to guide conversational flow for maternal health interviews"
+    columns:
+      - name: should_ask_preeclampsia_symptoms
+        description: "Flag to ask about preeclampsia warning signs"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_headaches
+        description: "Flag to ask about severe headaches"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_vision_changes
+        description: "Flag to ask about vision changes or disturbances"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_abdominal_pain
+        description: "Flag to ask about upper abdominal/epigastric pain"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_swelling
+        description: "Flag to ask about swelling or edema"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_urine_output
+        description: "Flag to ask about decreased urine output"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_gdm_symptoms
+        description: "Flag to ask about gestational diabetes symptoms"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_excessive_thirst
+        description: "Flag to ask about excessive thirst (polydipsia)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_frequent_urination
+        description: "Flag to ask about frequent urination (polyuria)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_diet_nutrition
+        description: "Flag to ask about diet and nutrition"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_infection_symptoms
+        description: "Flag to ask about infection symptoms"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_chest_symptoms
+        description: "Flag to ask about chest pain or discomfort"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_palpitations
+        description: "Flag to ask about heart palpitations"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_shortness_breath
+        description: "Flag to ask about shortness of breath or dyspnea"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_dizziness
+        description: "Flag to ask about dizziness or fainting"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_fetal_movement
+        description: "Flag to ask about fetal movement patterns"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_contractions
+        description: "Flag to ask about contractions or labor signs"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_vaginal_bleeding
+        description: "Flag to ask about vaginal bleeding"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_fluid_leakage
+        description: "Flag to ask about amniotic fluid leakage"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_gestational_age
+        description: "Flag to ask about current gestational age"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_previous_complications
+        description: "Flag to ask about previous pregnancy complications"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_current_medications
+        description: "Flag to ask about current medications"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_medication_adherence
+        description: "Flag to ask about medication adherence"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_physical_activity
+        description: "Flag to ask about physical activity level"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_stress_levels
+        description: "Flag to ask about stress and anxiety levels"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_home_bp_monitoring
+        description: "Flag to ask about home blood pressure monitoring"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_glucose_monitoring
+        description: "Flag to ask about glucose monitoring practices"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: needs_immediate_ob_evaluation
+        description: "Flag indicating need for immediate OB evaluation"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: needs_urgent_ob_appointment
+        description: "Flag indicating need for urgent OB appointment"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: needs_mfm_referral
+        description: "Flag indicating need for maternal-fetal medicine specialist referral"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: needs_hospitalization_flag
+        description: "Flag indicating need for hospital admission"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: needs_emergency_department
+        description: "Flag indicating need for emergency department evaluation"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: priority_education_topics
+        description: "Comma-separated list of priority patient education topics"
+        tests:
+          - not_null
+      
+      - name: selfmonitoring_focus_areas
+        description: "Comma-separated list of self-monitoring focus areas"
+        tests:
+          - not_null
+      
+      - name: lifestyle_modification_priorities
+        description: "Comma-separated list of lifestyle modification priorities"
+        tests:
+          - not_null
+      
+      - name: communication_tone
+        description: "Recommended communication tone based on urgency"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['urgent_directive_immediate_action', 'serious_concerned_prompt_action', 'informative_supportive_followup', 'reassuring_educational']
+      
+      - name: recommended_followup_timeframe
+        description: "Recommended follow-up timeframe based on urgency"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['immediate_now', 'within_24_hours', 'within_1_week', 'routine_prenatal_schedule']
+      
+      - name: needs_multidisciplinary_care
+        description: "Flag indicating need for multidisciplinary care coordination"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: monitoring_intensity_needed
+        description: "Recommended monitoring intensity level"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['continuous_inpatient', 'intensive_outpatient', 'frequent_monitoring', 'increased_monitoring', 'routine_prenatal']
+      
+      - name: conversation_starting_point
+        description: "Recommended conversation starting point"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['emergency_assessment', 'preeclampsia_screening', 'infection_assessment', 'risk_assessment', 'routine_check_in']
+      
+      - name: primary_clinical_concern
+        description: "Primary clinical concern to address first"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['severe_hypertension_preeclampsia', 'maternal_fever_sepsis_risk', 'severe_hyperglycemia', 'preeclampsia_high_risk', 'gestational_diabetes_management', 'gestational_hypertension', 'multiple_abnormalities', 'advanced_maternal_age_monitoring', 'routine_prenatal_care']
+      
+      - name: overall_risk_stratification
+        description: "Overall risk stratification for care planning"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['very_high_risk', 'high_risk', 'moderate_risk', 'low_moderate_risk', 'low_risk']
+            
+      - name: ftr_pcos_core_clinical
+        description: "Core clinical features for PCOS and hormonal health assessment"
+        columns:
+        - name: reproductive_age_category

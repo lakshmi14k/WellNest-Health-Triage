@@ -1,0 +1,26 @@
+version: 2
+
+sources:
+  - name: wellnest_raw
+    description: "Raw healthcare data tables"
+    database: WELLNEST
+    schema: PUBLIC
+    
+    tables:
+      - name: RAW_MENTALHEALTH
+        description: "Mental health patient data"
+        
+      - name: RAW_DIABETES_DATA
+        description: "Diabetes patient data"
+        
+      - name: RAW_BLOODPRESSURE_DATA
+        description: "Blood pressure and hypertension data"
+        
+      - name: RAW_MATERNALHEALTH_DATA
+        description: "Maternal health data"
+      
+      - name: RAW_PCOS_DATA
+        description: "PCOS hormonal and metabolic data"
+      
+      - name: RAW_PCOS_INFERTILITY_DATA
+        description: "PCOS infertility patient data with Beta-HCG and AMH levels"

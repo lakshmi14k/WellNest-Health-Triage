@@ -1,0 +1,658 @@
+# models/gold/features/lifestyle_diseases/schema.yml
+
+version: 2
+
+models:
+  - name: ftr_diabetes_core_clinical
+    description: "Core clinical features for diabetes and cardiovascular disease pattern recognition"
+    columns:
+      - name: diabetes_stage
+        description: "Diabetes staging based on HbA1c levels following ADA guidelines"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['normal', 'prediabetes', 'diabetes_controlled', 'diabetes_uncontrolled', 'diabetes_severe', 'unknown']
+      
+      - name: glucose_control_status
+        description: "Current glucose control status based on blood glucose level"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['normal', 'prediabetes_range', 'diabetes_mild', 'diabetes_moderate', 'diabetes_severe', 'unknown']
+      
+      - name: bmi_category
+        description: "BMI classification following WHO guidelines"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['underweight', 'normal', 'overweight', 'obese_class1', 'obese_class2', 'obese_class3_severe', 'unknown']
+      
+      - name: cardiometabolic_disease_count
+        description: "Count of cardiometabolic conditions (0-3)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [0, 1, 2, 3]
+      
+      - name: smoking_status_clean
+        description: "Standardized smoking status"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['current', 'former', 'never', 'ever', 'no_info']
+      
+      - name: is_obese
+        description: "Flag indicating obesity (BMI >= 30)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: is_current_smoker
+        description: "Flag indicating current smoking status"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: has_multiple_conditions
+        description: "Flag indicating presence of 2+ cardiometabolic conditions"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+
+  - name: ftr_diabetes_risk_urgency
+    description: "Risk scoring and urgency classification features for triage"
+    columns:
+      - name: glucose_urgency_level
+        description: "Urgency classification based on glucose levels"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['emergency', 'urgent', 'needs_attention', 'routine']
+      
+      - name: hyperglycemia_urgency
+        description: "High blood sugar urgency classification"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['emergency_hyperglycemia', 'urgent_hyperglycemia', 'concerning_hyperglycemia', 'stable']
+      
+      - name: hypoglycemia_urgency
+        description: "Low blood sugar urgency classification"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['emergency_hypoglycemia', 'urgent_hypoglycemia', 'no_hypoglycemia']
+      
+      - name: cardiovascular_risk_score
+        description: "Composite cardiovascular risk score (0-10 scale)"
+        tests:
+          - not_null
+      
+      - name: metabolic_syndrome_score
+        description: "Metabolic syndrome risk score (0-8 scale)"
+        tests:
+          - not_null
+      
+      - name: diabetes_complication_risk_score
+        description: "Risk score for diabetes complications (0-12 scale)"
+        tests:
+          - not_null
+      
+      - name: weight_management_priority
+        description: "Priority level for weight management intervention"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['critical', 'high', 'moderate', 'low', 'maintenance']
+      
+      - name: smoking_cessation_priority
+        description: "Priority level for smoking cessation intervention"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['critical', 'high', 'moderate', 'relapse_prevention', 'not_applicable']
+      
+      - name: age_risk_category
+        description: "Age-based risk category for diabetes complications"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['young_onset_high_risk', 'standard_risk', 'elderly_high_risk']
+      
+      - name: has_premature_disease
+        description: "Flag for diabetes/heart disease onset before age 45"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+
+  - name: ftr_diabetes_conversation_prompts
+    description: "Features to guide conversational flow and follow-up questioning"
+    columns:
+      - name: should_ask_diabetic_symptoms
+        description: "Flag indicating whether to ask about diabetic symptoms"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_cardiovascular_symptoms
+        description: "Flag indicating whether to ask about cardiovascular symptoms"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_neuropathy_symptoms
+        description: "Flag indicating whether to ask about neuropathy symptoms"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_diet_habits
+        description: "Flag indicating whether to ask about dietary habits"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_physical_activity
+        description: "Flag indicating whether to ask about physical activity"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_medication_adherence
+        description: "Flag indicating whether to ask about medication adherence"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: needs_glucose_monitoring_discussion
+        description: "Flag indicating need for glucose monitoring discussion"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: needs_bp_monitoring_discussion
+        description: "Flag indicating need for blood pressure monitoring discussion"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: needs_specialist_referral_flag
+        description: "Flag indicating potential need for specialist referral"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: priority_education_topics
+        description: "Comma-separated list of priority education topics for patient"
+        tests:
+          - not_null
+
+  # ===== HYPERTENSION FEATURES START HERE =====
+
+  - name: ftr_hypertension_core_clinical
+    description: "Core clinical features for hypertension and cardiovascular risk assessment"
+    columns:
+      - name: bp_stage
+        description: "Blood pressure stage classification following ACC/AHA 2017 guidelines"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['normal', 'elevated', 'stage1_hypertension', 'stage2_hypertension', 'hypertensive_crisis', 'unknown']
+      
+      - name: systolic_category
+        description: "Systolic blood pressure category"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['normal', 'elevated', 'stage1', 'stage2_moderate', 'stage2_severe', 'crisis', 'unknown']
+      
+      - name: diastolic_category
+        description: "Diastolic blood pressure category"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['normal', 'stage1', 'stage2_moderate', 'stage2_severe', 'crisis', 'unknown']
+      
+      - name: pulse_pressure
+        description: "Pulse pressure (systolic - diastolic), marker of arterial stiffness"
+        tests:
+          - not_null
+      
+      - name: pulse_pressure_category
+        description: "Pulse pressure risk category"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['normal', 'borderline', 'widened_high_risk', 'unknown']
+      
+      - name: has_isolated_systolic_htn
+        description: "Flag for isolated systolic hypertension (common in elderly)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: mean_arterial_pressure
+        description: "Calculated mean arterial pressure (MAP)"
+        tests:
+          - not_null
+      
+      - name: map_category
+        description: "Mean arterial pressure category"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['normal', 'elevated', 'high', 'unknown']
+      
+      - name: heart_rate_category
+        description: "Heart rate classification"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['bradycardia', 'normal', 'mild_tachycardia', 'tachycardia', 'unknown']
+      
+      - name: cholesterol_category
+        description: "Total cholesterol classification per NCEP ATP III"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['desirable', 'borderline_high', 'high', 'unknown']
+      
+      - name: ldl_category
+        description: "LDL cholesterol classification"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['optimal', 'near_optimal', 'borderline_high', 'high', 'very_high', 'unknown']
+      
+      - name: hdl_category
+        description: "HDL cholesterol classification"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['low_major_risk', 'borderline_low', 'high_protective', 'unknown']
+      
+      - name: triglycerides_category
+        description: "Triglycerides classification"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['normal', 'borderline_high', 'high', 'very_high', 'unknown']
+      
+      - name: cholesterol_hdl_ratio
+        description: "Cholesterol to HDL ratio (atherogenic index)"
+        tests:
+          - not_null
+      
+      - name: cholesterol_ratio_risk
+        description: "Cholesterol ratio cardiovascular risk category"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['low_risk', 'moderate_risk', 'high_risk', 'unknown']
+      
+      - name: glucose_status
+        description: "Glucose status classification"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['normal', 'prediabetes', 'diabetes_range', 'unknown']
+      
+      - name: smoking_status_clean
+        description: "Standardized smoking status"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['current', 'former', 'never', 'unknown']
+      
+      - name: is_current_smoker
+        description: "Flag indicating current smoking status"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: activity_level_clean
+        description: "Standardized physical activity level"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['sedentary', 'moderate', 'active', 'unknown']
+      
+      - name: is_sedentary
+        description: "Flag indicating sedentary lifestyle"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: alcohol_risk_level
+        description: "Alcohol consumption risk level"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['low_moderate', 'moderate_high', 'excessive', 'unknown']
+      
+      - name: salt_intake_risk
+        description: "Sodium intake risk classification"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['within_guidelines', 'elevated', 'excessive', 'unknown']
+      
+      - name: sleep_adequacy
+        description: "Sleep duration adequacy classification"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['insufficient', 'adequate', 'excessive', 'unknown']
+      
+      - name: stress_category
+        description: "Stress level classification"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['low', 'moderate', 'high', 'very_high', 'unknown']
+
+  - name: ftr_hypertension_risk_urgency
+    description: "Risk scoring and urgency classification for hypertension management"
+    columns:
+      - name: bp_urgency_level
+        description: "Blood pressure urgency classification for triage"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['hypertensive_crisis_emergency', 'severe_urgency', 'moderate_urgency', 'needs_attention', 'routine']
+      
+      - name: potential_hypertensive_emergency
+        description: "Flag for potential hypertensive emergency requiring immediate evaluation"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: cardiovascular_risk_score
+        description: "Framingham-style cardiovascular risk score (0-15 scale)"
+        tests:
+          - not_null
+      
+      - name: ten_year_cv_risk_category
+        description: "10-year cardiovascular risk category"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['low_risk', 'moderate_risk', 'high_risk']
+      
+      - name: metabolic_syndrome_criteria_count
+        description: "Count of metabolic syndrome criteria met (0-5)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [0, 1, 2, 3, 4, 5]
+      
+      - name: has_metabolic_syndrome
+        description: "Flag indicating metabolic syndrome diagnosis (3+ criteria)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: stroke_risk_factors_count
+        description: "Count of stroke risk factors present"
+        tests:
+          - not_null
+      
+      - name: dietary_modification_priority
+        description: "Priority level for dietary intervention (DASH diet)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['critical', 'high', 'moderate', 'preventive', 'maintenance']
+      
+      - name: exercise_priority
+        description: "Priority level for exercise prescription"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['high', 'moderate', 'preventive', 'maintenance']
+      
+      - name: weight_loss_priority
+        description: "Priority level for weight loss intervention"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['critical', 'high', 'moderate', 'maintenance']
+      
+      - name: smoking_cessation_priority_htn
+        description: "Priority level for smoking cessation (hypertension context)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['critical', 'high', 'moderate', 'relapse_prevention', 'not_applicable']
+      
+      - name: alcohol_reduction_priority
+        description: "Priority level for alcohol reduction"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['high', 'moderate', 'maintenance']
+      
+      - name: stress_management_priority
+        description: "Priority level for stress management intervention"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['high', 'moderate', 'low']
+      
+      - name: likely_needs_medication
+        description: "Flag indicating likely need for antihypertensive medication"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: medication_urgency
+        description: "Urgency level for medication therapy initiation"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['immediate', 'urgent', 'prompt', 'consider', 'lifestyle_first']
+      
+      - name: cardiac_damage_risk_score
+        description: "Risk score for cardiac target organ damage"
+        tests:
+          - not_null
+      
+      - name: kidney_damage_risk
+        description: "Risk category for hypertensive kidney damage"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['high_nephropathy_risk', 'moderate_nephropathy_risk', 'low_risk']
+      
+      - name: age_bp_risk_category
+        description: "Age-specific blood pressure risk category"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['young_onset_critical', 'midlife_high_risk', 'elderly_high_risk', 'isolated_systolic_elderly', 'standard_management']
+
+  - name: ftr_hypertension_conversation_prompts
+    description: "Features to guide conversational flow for hypertension interviews"
+    columns:
+      - name: should_ask_crisis_symptoms
+        description: "Flag to ask about hypertensive emergency symptoms"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_cardiovascular_symptoms
+        description: "Flag to ask about cardiovascular symptoms"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_stroke_symptoms
+        description: "Flag to ask about stroke warning signs"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_kidney_symptoms
+        description: "Flag to ask about kidney-related symptoms"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_headache_vision
+        description: "Flag to ask about headaches and vision changes"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_chest_symptoms
+        description: "Flag to ask about chest pain and palpitations"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_diet_sodium
+        description: "Flag to ask about diet and sodium intake"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_exercise_habits
+        description: "Flag to ask about physical activity habits"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_stress_sleep
+        description: "Flag to ask about stress and sleep patterns"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_alcohol_use
+        description: "Flag to ask about alcohol consumption"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_weight_management
+        description: "Flag to ask about weight management"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_current_medications
+        description: "Flag to ask about current blood pressure medications"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_medication_adherence
+        description: "Flag to ask about medication adherence"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: should_ask_medication_sideeffects
+        description: "Flag to ask about medication side effects"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: needs_home_bp_monitoring
+        description: "Flag indicating need for home blood pressure monitoring discussion"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: needs_lipid_management_discussion
+        description: "Flag indicating need for lipid management discussion"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: needs_diabetes_screening
+        description: "Flag indicating need for diabetes screening discussion"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: needs_kidney_function_testing
+        description: "Flag indicating need for kidney function testing discussion"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: needs_specialist_referral_flag
+        description: "Flag indicating potential need for specialist referral"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: needs_emergency_care_flag
+        description: "Flag indicating need for emergency care"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: consider_cardiology_referral
+        description: "Flag indicating consideration for cardiology referral"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: priority_education_topics
+        description: "Comma-separated list of priority education topics"
+        tests:
+          - not_null
+      
+      - name: lifestyle_modification_focus
+        description: "Comma-separated list of lifestyle modification focus areas"
+        tests:
+          - not_null
+      
+      - name: communication_tone
+        description: "Recommended communication tone based on urgency"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['urgent_immediate_action', 'serious_prompt_action', 'concerned_timely_action', 'informative_preventive', 'supportive_maintenance']
