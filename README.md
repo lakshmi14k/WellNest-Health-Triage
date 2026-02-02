@@ -25,12 +25,12 @@
 
 **Built end-to-end dbt transformation pipeline** processing 7 healthcare datasets through 18+ models:
 
-#### 1. Exploratory Data Analysis & Data Quality Assessment:
+ 1. Exploratory Data Analysis & Data Quality Assessment:
 - Conducted Python-based EDA identifying critical patterns and data quality issues across 7 medical datasets
 - Analyzed missing data patterns, feature correlations, and domain-specific data quality requirements
 - Established data validation rules and cleansing requirements for healthcare context
 
-#### 2. Medallion Architecture Implementation (Bronze → Silver → Gold)
+ 2. Medallion Architecture Implementation (Bronze → Silver → Gold)
 
 **Bronze Layer (Raw Data Ingestion):**
 - Ingested 7 raw healthcare datasets into Snowflake:
@@ -59,7 +59,7 @@
 - Created features aligned with clinical guidelines (WHO, NIH standards)
 - Examples: Pulse pressure calculations (cardiovascular risk), BMI categorization, glucose-HbA1c concordance, metabolic syndrome scoring
 
-#### 3. Feature Engineering for LLM Fine-Tuning:
+ 3. Feature Engineering for LLM Fine-Tuning:
 
 **Expanded feature space from 10-18 raw columns to 96 engineered features:**
 - **Purpose:** Provide richer context for LLM training beyond limited raw information
@@ -73,7 +73,7 @@
 - Safety classification preventing emergency guidance
 - Standardized formats for consistent model training
 
-#### 4. Data Quality & Governance:
+ 4. Data Quality & Governance:
 
 - Implemented data lineage tracking through dbt DAG
 - Created data validation tests ensuring pipeline reliability
@@ -120,9 +120,9 @@ This was a collaborative academic project where responsibilities were divided by
 
 WellNest-Health-Triage/
 
-├── models/                        # dbt transformation models
+├── models/                         dbt transformation models
 
-│   ├── staging/                   # Silver layer: Data cleaning
+│   ├── staging/                    Silver layer: Data cleaning
 
 │   │   ├── stg_bloodpressure_cleaned.sql
 
@@ -138,7 +138,7 @@ WellNest-Health-Triage/
 
 │   │   └── stg_menstrual_cleaned.sql
 
-│   ├── intermediate/              # Business logic transformations
+│   ├── intermediate/               Business logic transformations
 
 │   │   ├── int_diabetes_risk_urgency.sql
 
@@ -146,7 +146,7 @@ WellNest-Health-Triage/
 
 │   │   └── int_mental_health_risk_urgency.sql
 
-│   └── marts/                     # Gold layer: Feature engineering
+│   └── marts/                      Gold layer: Feature engineering
 
 │       ├── ftr_diabetes_core_clinical.sql
 
@@ -166,29 +166,29 @@ WellNest-Health-Triage/
 
 │       └── ftr_pcos_core_clinical.sql
 
-├── seeds/                         # Reference data
+├── seeds/                          Reference data
 
-├── macros/                        # Reusable dbt macros
+├── macros/                         Reusable dbt macros
 
-├── analyses/                      # Ad-hoc analytical queries
+├── analyses/                       Ad-hoc analytical queries
 
-├── snapshots/                     # Historical data snapshots
+├── snapshots/                      Historical data snapshots
 
-├── EDA/                           # Exploratory data analysis notebooks
+├── EDA/                            Exploratory data analysis notebooks
 
-├── ML_Models/                     # Baseline ML experiments
+├── ML_Models/                      Baseline ML experiments
 
-├── agents/                        # LLM routing logic
+├── agents/                         LLM routing logic
 
-├── StreamLit/                     # Frontend application
+├── StreamLit/                      Frontend application
 
-├── Demo_App/                      # Demo interface
+├── Demo_App/                       Demo interface
 
-├── eval/                          # Model evaluation scripts
+├── eval/                           Model evaluation scripts
 
-├── tests/                         # Data validation tests
+├── tests/                          Data validation tests
 
-├── dbt_project.yml                # dbt configuration
+├── dbt_project.yml                 dbt configuration
 
 ├── .gitignore
 
@@ -196,7 +196,7 @@ WellNest-Health-Triage/
 
 **System Architecture:**
 
-### Data Flow Pipeline:
+ Data Flow Pipeline:
 
 ```
 Raw Data Sources (7 datasets)
@@ -215,7 +215,7 @@ Raw Data Sources (7 datasets)
    Production System
 ```
 
-### User Query Flow:
+ User Query Flow:
 
 ```
 User Query (Streamlit Interface)
@@ -243,29 +243,29 @@ User Query (Streamlit Interface)
 
 **How It Works:**
 
-### 1. Data Processing Foundation:
+ 1. Data Processing Foundation:
 The system begins with clean, feature-rich data:
 - 7 raw medical datasets ingested into Snowflake Bronze layer
 - dbt pipeline transforms data through Silver (cleaning) and Gold (feature engineering) layers
 - 96 engineered features provide clinical context for AI models
 
-### 2. User Interaction:
+ 2. User Interaction:
 - User signs up and creates health profile in Snowflake
 - User submits health query through Streamlit interface
 - Query Intent Classifier detects category (diabetes, mental health, hypertension)
 
-### 3. Intelligent Routing: (Claude Sonnet 4)
+ 3. Intelligent Routing: (Claude Sonnet 4)
 - Receives query + classification + user profile
 - Routes to appropriate domain-specific expert model
 - Structures and standardizes final response
 
-### 4. Domain Expertise: (Fine-tuned Llama 3.1-8B)
+ 4. Domain Expertise: (Fine-tuned Llama 3.1-8B)
 Three specialized models trained on the feature-engineered datasets:
 - **Diabetes Model:** Trained on diabetes-specific features
 - **Mental Health Model:** Sleep, stress, anxiety specialization
 - **Hypertension Model:** Blood pressure and cardiovascular focus
 
-### 5. Response Delivery:
+ 5. Response Delivery:
 - Router LLM structures the specialist's output
 - Safety guardrails validate response appropriateness
 - Medical disclaimers added automatically
@@ -273,13 +273,13 @@ Three specialized models trained on the feature-engineered datasets:
 
 **Results & Performance:**
 
-### Data Pipeline Metrics:
+ Data Pipeline Metrics:
 - **Datasets Processed:** 7 healthcare domains
 - **dbt Models Created:** 18+ transformations (7 staging, 3 intermediate, 9 marts)
 - **Features Engineered:** 96 domain-specific features
 - **Data Quality:** <1% missing values in gold layer, zero duplicates
 
-### Model Performance:
+ Model Performance:
 - **Baseline ML (Evaluation work):** 93.5% accuracy (Random Forest)
   - Identified feature leakage issues requiring pipeline refinement
   - Established performance benchmark for LLM comparison
@@ -288,7 +288,7 @@ Three specialized models trained on the feature-engineered datasets:
   - Perfect stability (no catastrophic failures)
 - **Multi-Domain Routing:** 95% confidence in domain classification
 
-### System Capabilities:
+ System Capabilities:
 - **Conversational AI:** Natural language health query understanding
 - **24/7 Availability:** Automated triage and guidance
 - **Safety Compliance:** 3-layer guardrails (keyword filter, router validation, response safety)
@@ -296,16 +296,16 @@ Three specialized models trained on the feature-engineered datasets:
 
 **Installation & Setup:**
 
-### Prerequisites:
+ Prerequisites:
 - Snowflake account with Cortex LLM access
 - dbt Core installed (`pip install dbt-snowflake`)
 - Python 3.8+ with required packages
 
-### dbt Pipeline Setup:
+ dbt Pipeline Setup:
 
 1. **Configure Snowflake Connection:**
 ```yaml
-# ~/.dbt/profiles.yml
+ ~/.dbt/profiles.yml
 wellnest:
   target: dev
   outputs:
@@ -313,7 +313,7 @@ wellnest:
       type: snowflake
       account: YOUR_ACCOUNT
       user: YOUR_USER
-      authenticator: oauth  # Use Personal Access Token
+      authenticator: oauth   Use Personal Access Token
       token: YOUR_PAT_TOKEN
       database: WELLNEST
       warehouse: COMPUTE_WH
@@ -329,17 +329,17 @@ cd WellNest-Health-Triage
 
 3. **Run dbt Pipeline:**
 ```bash
-# Test connection
+ Test connection
 dbt debug
 
-# Run all transformations
+ Run all transformations
 dbt run
 
-# Run with specific models
+ Run with specific models
 dbt run --select staging
 dbt run --select marts
 
-# Test data quality
+ Test data quality
 dbt test
 ```
 
